@@ -55,6 +55,7 @@ public class HuffTrie {
         return temp;
     }
 
+
     public void setBin(char b) {
         this.bin = b;
     }

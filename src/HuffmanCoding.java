@@ -101,14 +101,14 @@ public class HuffmanCoding {
     public static String encode(String text) {
         // TODO fill this in.
         char[] charList = text.toCharArray();
-        String encodedText="";
+        StringBuilder encodedText= new StringBuilder();
 
         for (char c: charList){
             String code = encTab.get(c);
-            encodedText += code;
+            encodedText.append(code);
         }
 
-        return encodedText;
+        return encodedText.toString();
     }
     
     /**
@@ -118,9 +118,25 @@ public class HuffmanCoding {
     public static String decode(String encoded) {
         // TODO fill this in.
         char[] charList = encoded.toCharArray();
+        StringBuilder decodedText = new StringBuilder();
+
+        String searchTerm = "";
+
+        for(char a: charList){
+            searchTerm += a;
+            if (encTab.containsValue(searchTerm)){
+                for (Character ch: encTab.keySet()){
+                    String tester = encTab.get(ch);
+                    if(encTab.get(ch).matches(searchTerm)){
+                        decodedText.append(ch);
+                    }
+                }
+                searchTerm = "";
+            }
+        }
 
 
-        return "";
+        return decodedText.toString();
     }
 
 
