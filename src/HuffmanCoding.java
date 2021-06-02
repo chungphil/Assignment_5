@@ -9,6 +9,7 @@ import java.io.*;
  */
 public class HuffmanCoding {
 
+
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Please call this program with two arguments, which are " +
@@ -46,8 +47,8 @@ public class HuffmanCoding {
     }
 
     // TODO add a field with your ACTUAL HuffmanTree implementation.
-    private static Object tree; // Change type from Object to HuffmanTree or appropriate type you design.
     private static HashMap<Character, String> encTab;
+    private static HuffTrie fullTrie;
 
     /**
      * This would be a good place to compute and store the tree.
@@ -56,6 +57,7 @@ public class HuffmanCoding {
         // TODO Construct the ACTUAL HuffmanTree here to use with both encode and decode below.
         HashMap<Character, Integer> freqTable = new HashMap<>();
         char[] charList = text.toCharArray();
+        PriorityQueue<HuffTrie> freqQue = new PriorityQueue<>(new nodeComparator());
 
         for(char c: charList){
             if(freqTable.containsKey(c)){
@@ -67,10 +69,28 @@ public class HuffmanCoding {
             }
         }
 
+        for (char c: freqTable.keySet()){
+            HuffTrie HT = new HuffTrie(freqTable.get(c));
+            HT.setCharacter(c);
+            freqQue.add(HT);
+        }
 
+        while (freqQue.size()>1){ // create HuffTrie based on lowest frequency
+            HuffTrie lowest = freqQue.poll(); // selects and removes lowest freq node
+            HuffTrie lowest2 = freqQue.poll();// selects/removes second lowest
+            HuffTrie newHuff = new HuffTrie((lowest.getFreq()+ lowest2.getFreq()));
+            newHuff.setBranch(lowest, lowest2);
+            freqQue.add(newHuff);
+        }
+        //Set trieRoot and recurse to add binary to branches
+        HuffTrie trieRoot = freqQue.poll();
+        trieRoot.trieRec();
 
-        // TODO fill this in.
-        return new HashMap<Character, String>();//the hashmap has encoding codes for each character
+        HashMap<Character,String> toReturn = trieRoot.createTab();
+
+        encTab = toReturn;//set static variable
+        fullTrie = trieRoot;
+        return toReturn;//the hashmap has encoding codes for each character
     }
     
     /**
@@ -80,7 +100,15 @@ public class HuffmanCoding {
      */
     public static String encode(String text) {
         // TODO fill this in.
-        return "";
+        char[] charList = text.toCharArray();
+        String encodedText="";
+
+        for (char c: charList){
+            String code = encTab.get(c);
+            encodedText += code;
+        }
+
+        return encodedText;
     }
     
     /**
@@ -89,6 +117,21 @@ public class HuffmanCoding {
      */
     public static String decode(String encoded) {
         // TODO fill this in.
+        char[] charList = encoded.toCharArray();
+
+
         return "";
+    }
+
+
+    static class nodeComparator implements Comparator<HuffTrie>{
+        public int compare(HuffTrie h1, HuffTrie h2){
+            Integer.compare(h1.getFreq(), h2.getFreq());
+            if(h1.getFreq() > h2.getFreq()){
+                return 1;
+            } else if(h1.getFreq() < h2.getFreq()){
+                return -1;
+            } else {return 0;}
+        }
     }
 }
