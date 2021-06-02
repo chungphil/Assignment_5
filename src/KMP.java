@@ -19,13 +19,12 @@ public class KMP {
 //                }
 //
 ////                System.out.println(fileText.length());
-//                String test = "dependence of which we are not\n" +
-//                        "conscious";
+//                System.out.println(fileText.toString().charAt(8));
 ////                int[] M = matchTable(test);
 ////                for (int i: M){
 ////                    System.out.println(i);
 ////                }
-//                System.out.println(search(fileText.toString(), test));//args[1]
+////                System.out.println(search(fileText.toString(), test));//args[1]
 //            } catch (FileNotFoundException e) {
 //                System.out.println("Unable to find file called " + args[0]);
 //            }

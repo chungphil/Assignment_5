@@ -47,14 +47,30 @@ public class HuffmanCoding {
 
     // TODO add a field with your ACTUAL HuffmanTree implementation.
     private static Object tree; // Change type from Object to HuffmanTree or appropriate type you design.
+    private static HashMap<Character, String> encTab;
 
     /**
      * This would be a good place to compute and store the tree.
      */
     public static Map<Character, String> constructTree(String text) {
         // TODO Construct the ACTUAL HuffmanTree here to use with both encode and decode below.
+        HashMap<Character, Integer> freqTable = new HashMap<>();
+        char[] charList = text.toCharArray();
+
+        for(char c: charList){
+            if(freqTable.containsKey(c)){
+                int count = freqTable.get(c);
+                count++;
+                freqTable.put(c,count);
+            } else {
+                freqTable.put(c,1);
+            }
+        }
+
+
+
         // TODO fill this in.
-        return new HashMap<Character, String>();
+        return new HashMap<Character, String>();//the hashmap has encoding codes for each character
     }
     
     /**
