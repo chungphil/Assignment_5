@@ -1,5 +1,10 @@
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
+
 
 public class LempelZivCompress {
 
@@ -17,6 +22,13 @@ public class LempelZivCompress {
                 }
 
                 System.out.println(compress(fileText.toString()));
+                String out = compress(fileText.toString());
+                Path filepath = Paths.get("C:/Users/mrphi/COMP261/Assignment 5/code/code", "wapcomp.txt");
+                try{
+                    Files.writeString(filepath,out);
+                } catch(IOException e){
+                    e.printStackTrace();
+                }
             } catch (FileNotFoundException e) {
                 System.out.println("Unable to find file called " + args[0]);
             }
@@ -36,34 +48,31 @@ public class LempelZivCompress {
         while (cursor < input.length()){
             int length = 0;
             int prevMatch = 0;
-
+            String searchS = "";
 
             if (cursor == input.length()-1){
                 break;
             }
             while (true){
-                String searchW = input.substring((cursor < wSize)?0:cursor-wSize,(cursor<1)?0:cursor);
-                String searchT = input.substring(cursor, cursor+length+1);
+                String searchW = input.substring((cursor < wSize)?0:cursor-wSize,(cursor<1)?0:cursor);//search window
+                String searchT = input.substring(cursor, cursor+length+1);//search term
+//                searchS = searchS + input.charAt(cursor+length);
                 boolean matchBool = searchW.contains(searchT);
                 if (matchBool){
                     int wCursor = searchW.indexOf(searchT);
-                    prevMatch = (cursor>wSize)? cursor - (wSize-wCursor): wCursor;
+                    prevMatch = (cursor>wSize)? cursor - ((cursor -wSize)+wCursor): cursor - wCursor;
                     length++;
                 } else {
-//                    int offset = (prevMatch>0)?cursor - (wSize+prevMatch):prevMatch;
-                    int offset = (prevMatch<1)?prevMatch:cursor-prevMatch;
+                    int offset = prevMatch;
+//                    int offset = (prevMatch<1&&length ==0)?prevMatch:cursor-prevMatch;
 
-                    String toAppend = "[" + offset + "," + length + "," + input.substring(cursor+length,cursor+length+1) + "]";
+                    String toAppend = "[" + offset + "|" + length + "|" + input.substring(cursor+length,cursor+length+1) + "]";
                     output.append(toAppend);
                     cursor = cursor + length + 1;
                     break;
                 }
             }
         }
-
-
-
-
         return output.toString();
     }
 }
