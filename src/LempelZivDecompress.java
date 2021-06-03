@@ -13,10 +13,11 @@ public class LempelZivDecompress {
                 // Read the entire file into one String.
                 StringBuilder fileText = new StringBuilder();
                 while (s.hasNextLine()) {
-                    fileText.append(s.nextLine());// + "\n");
+                    fileText.append(s.nextLine() + "\n");
                 }
+                String compressed = LempelZivCompress.compress(fileText.toString());
 
-                System.out.println(decompress(fileText.toString()));
+                System.out.println(decompress(compressed));
             } catch (FileNotFoundException e) {
                 System.out.println("Unable to find file called " + args[0]);
             }
@@ -35,6 +36,9 @@ public class LempelZivDecompress {
         String searchTerm = "";
 
         for(char a: charList){
+            if(a == '\n'){
+                continue;
+            }
             searchTerm += a;
             if (searchTerm.matches("\\[[0-9]+\\|[0-9]+\\|.*\\]")){
                 //String[] v = searchTerm.split("\\[[0-9]+\\|[0-9]+\\|.*\\]");
@@ -62,6 +66,6 @@ public class LempelZivDecompress {
             }
         }
 
-        return decompStr.toString().substring(0,100);
+        return decompStr.toString();
     }
 }
