@@ -28,14 +28,7 @@ public class LempelZivCompress {
      * text string.
      */
     public static String compress(String input) {
-        // TODO (currently just returns the argument).
-
-//        System.out.println(input.substring(32,33));
-//        System.out.println(input.substring(13));
-//        int match = input.substring(0, 15).indexOf(input.substring(32, 33));
-//        boolean matchbool = input.substring(0,15).contains(input.substring(32,33));
-//        System.out.println(match);
-//        System.out.println(matchbool);
+        StringBuilder output = new StringBuilder();
 
         int cursor = 0;
         int wSize = 100;
@@ -44,6 +37,10 @@ public class LempelZivCompress {
             int length = 0;
             int prevMatch = 0;
 
+
+            if (cursor == input.length()-1){
+                break;
+            }
             while (true){
                 String searchW = input.substring((cursor < wSize)?0:cursor-wSize,(cursor<1)?0:cursor);
                 String searchT = input.substring(cursor, cursor+length+1);
@@ -56,7 +53,8 @@ public class LempelZivCompress {
 //                    int offset = (prevMatch>0)?cursor - (wSize+prevMatch):prevMatch;
                     int offset = (prevMatch<1)?prevMatch:cursor-prevMatch;
 
-                    System.out.println("[" + offset + "," + length + "," + input.substring(cursor+length,cursor+length+1) + "]");
+                    String toAppend = "[" + offset + "," + length + "," + input.substring(cursor+length,cursor+length+1) + "]";
+                    output.append(toAppend);
                     cursor = cursor + length + 1;
                     break;
                 }
@@ -64,6 +62,8 @@ public class LempelZivCompress {
         }
 
 
-        return input;
+
+
+        return output.toString();
     }
 }
