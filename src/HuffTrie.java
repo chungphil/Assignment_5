@@ -4,6 +4,7 @@ public class HuffTrie {
     private int freq;
     private char character;
     private char bin;
+    private char compChar;
     private String encoder="";
     private HuffTrie branchL;
     private HuffTrie branchR;
@@ -11,7 +12,6 @@ public class HuffTrie {
 
     public HuffTrie(int f) {
         this.freq = f;
-
     }
 
     public void setCharacter(char c){
@@ -23,7 +23,23 @@ public class HuffTrie {
     public int getFreq(){
         return this.freq;
     }
+    public char getCompChar(){return this.compChar;}
 
+    public void setCompChar(){
+        if (branchR != null && branchL != null){
+            char leftComp = branchL.getCompChar();
+            char rightComp = branchR.getCompChar();
+            int priority = Character.compare(leftComp,rightComp);
+            if(priority<0){//leftComp smaller than rightComp
+                this.compChar = leftComp;
+            } else{
+                this.compChar = rightComp;
+            }
+        } else{
+            this.compChar = this.character;
+        }
+
+    }
     public void trieRec(){
 
         if (branchR != null && branchL != null){

@@ -21,6 +21,7 @@ public class HuffmanCoding {
             try {
                 Scanner s = new Scanner(new File(args[0]));
 
+
                 // Read the entire file into one String.
                 StringBuilder fileText = new StringBuilder();
                 while (s.hasNextLine()) {
@@ -59,7 +60,7 @@ public class HuffmanCoding {
         char[] charList = text.toCharArray();
         PriorityQueue<HuffTrie> freqQue = new PriorityQueue<>(new nodeComparator());
 
-        for(char c: charList){
+        for(char c: charList){;
             if(freqTable.containsKey(c)){
                 int count = freqTable.get(c);
                 count++;
@@ -72,14 +73,18 @@ public class HuffmanCoding {
         for (char c: freqTable.keySet()){
             HuffTrie HT = new HuffTrie(freqTable.get(c));
             HT.setCharacter(c);
+            HT.setCompChar();
             freqQue.add(HT);
         }
 
         while (freqQue.size()>1){ // create HuffTrie based on lowest frequency
             HuffTrie lowest = freqQue.poll(); // selects and removes lowest freq node
+            //System.out.println(lowest.getCharacter());
             HuffTrie lowest2 = freqQue.poll();// selects/removes second lowest
+            //System.out.println(lowest2.getCharacter());
             HuffTrie newHuff = new HuffTrie((lowest.getFreq()+ lowest2.getFreq()));
             newHuff.setBranch(lowest, lowest2);
+            newHuff.setCompChar();
             freqQue.add(newHuff);
         }
         //Set trieRoot and recurse to add binary to branches
@@ -141,13 +146,30 @@ public class HuffmanCoding {
 
 
     static class nodeComparator implements Comparator<HuffTrie>{
-        public int compare(HuffTrie h1, HuffTrie h2){
+        public int compare(HuffTrie h1, HuffTrie h2) {
             Integer.compare(h1.getFreq(), h2.getFreq());
-            if(h1.getFreq() > h2.getFreq()){
+            if (h1.getFreq() > h2.getFreq()) {
                 return 1;
-            } else if(h1.getFreq() < h2.getFreq()){
+            } else if (h1.getFreq() < h2.getFreq()) {
                 return -1;
-            } else {return 0;}
+            } else {
+                if (Character.compare(h1.getCompChar(),h2.getCompChar()) < 0){
+                    return -1;
+                } else if((Character.compare(h1.getCompChar(),h2.getCompChar()) > 0)){
+                    return 1;
+                } else {return 0;}
+            }
         }
     }
 }
+
+//static class nodeComparator implements Comparator<HuffTrie>{
+//    public int compare(HuffTrie h1, HuffTrie h2){
+//        Integer.compare(h1.getFreq(), h2.getFreq());
+//        if(h1.getFreq() > h2.getFreq()){
+//            return 1;
+//        } else if(h1.getFreq() < h2.getFreq()){
+//            return -1;
+//        } else {return 0;}
+//    }
+//}
