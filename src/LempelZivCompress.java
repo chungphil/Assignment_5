@@ -1,7 +1,4 @@
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.*;
 import java.io.*;
 
@@ -23,12 +20,7 @@ public class LempelZivCompress {
 
                 System.out.println(compress(fileText.toString()));
                 String out = compress(fileText.toString());
-//                Path filepath = Paths.get("C:/Users/mrphi/COMP261/Assignment 5/code/code", "wapcomp.txt");
-//                try{
-//                    Files.writeString(filepath,out);
-//                } catch(IOException e){
-//                    e.printStackTrace();
-//                }
+
             } catch (FileNotFoundException e) {
                 System.out.println("Unable to find file called " + args[0]);
             }
